@@ -238,16 +238,17 @@ a:hover { text-decoration: underline; }
   font-size: 13px;
   color: #292524;
   line-height: 1.5;
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
+  position: relative;
+  padding-left: 20px;
 }
 
 .warn-bullets li::before {
   content: "→";
   font-weight: 700;
   color: #a67c1a;
-  flex-shrink: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 .warn-bullets li strong { color: #1c1917; font-weight: 700; }
@@ -1188,6 +1189,10 @@ body.dark .card.ryan-card { background: linear-gradient(90deg, #2a0a0a 0%, var(-
   .card-actions { display: none !important; }
   .card-category { font-size: 14px; }
   .card-notes    { font-size: 12px; }
+  /* Badges: allow shrinking so they wrap instead of overflowing the card */
+  .card-badges   { flex-shrink: 1; max-width: 100%; }
+  .badge         { font-size: 9px; padding: 2px 7px; }
+  .badge-ryan    { font-size: 9px; padding: 2px 7px; }
 
   /* ── Routing Table → Card-style stacked layout ───────────── */
   /* Convert table rows to stacked grid cards on mobile          */
@@ -1215,7 +1220,10 @@ body.dark .card.ryan-card { background: linear-gradient(90deg, #2a0a0a 0%, var(-
     grid-row: 1;
     font-weight: 600;
     font-size: 13px;
-    word-break: break-word;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: none;
     padding-right: 4px;
   }
   .col-action {
@@ -1229,13 +1237,15 @@ body.dark .card.ryan-card { background: linear-gradient(90deg, #2a0a0a 0%, var(-
     grid-row: 2;
     font-size: 12px;
     color: var(--text-secondary);
-    word-break: break-word;
+    overflow-wrap: break-word;
+    word-break: normal;
   }
   /* assignee-name inherits smaller size in table on mobile */
   .col-assign .assignee-name { font-size: 12px; }
   .col-assign .table-secondary { font-size: 11px; }
-  .col-notes   { display: none; }
-  .col-actions { display: none; }
+  /* Use higher specificity than .routing-table td to ensure these hide */
+  .routing-table td.col-notes   { display: none; }
+  .routing-table td.col-actions { display: none; }
 
   /* ── Empty State ─────────────────────────────────────────── */
   .empty-state { padding: 32px 16px; }
