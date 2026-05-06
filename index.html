@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jira Ticket Roulette 👻 — Desert IT Solutions</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="app-wrapper">
+
+  <!-- ─── Header ─────────────────────────────────────────────── -->
+  <header class="app-header">
+    <button class="home-btn" id="homeBtn" title="Back to Search">
+      <h1>Jira Ticket Roulette <span class="ghost-emoji">👻</span></h1>
+      <p class="subtitle">Hilsinger / Hilco Jira · Desert IT Solutions</p>
+    </button>
+    <div class="header-links">
+      <a class="resource-link primary"
+         href="https://hilcovision.atlassian.net/jira/servicedesk/projects/ISD/queues/custom/5"
+         target="_blank" rel="noopener">↗ Jira Board</a>
+      <a class="resource-link itg-link"
+         href="https://ditlv.itglue.com/3181677/docs/16762433#version=published&documentMode=view"
+         target="_blank" rel="noopener">↗ IT Glue Doc</a>
+      <button class="gear-btn" id="darkToggle" title="Toggle dark mode">🌙</button>
+      <button class="gear-btn" id="adminToggle" title="Admin / Edit Data">⚙</button>
+    </div>
+  </header>
+
+  <!-- ─── Warning Banner ──────────────────────────────────────── -->
+  <div class="warning-banner">
+    <div class="warn-icon-wrap">⚠</div>
+    <div class="warn-content">
+      <p class="warn-headline">Two things to know before routing</p>
+      <ul class="warn-bullets">
+        <li>Ping <strong>Ryan Creasia</strong> internally before assigning any of his tickets.</li>
+        <li>DIT does <strong>not</strong> have Hilco / Hilsinger M365 admin credentials.</li>
+      </ul>
+    </div>
+    <button class="warn-toggle" id="warnToggle" aria-expanded="false">More</button>
+  </div>
+  <div class="warning-banner-extra" id="warnExtra" hidden>
+    <p>Do not assign any of Ryan's tickets without pinging him first — confirm he handles it before you route it.</p>
+    <p>Without M365 admin access, any ticket requiring Hilco/Hilsinger tenant-level admin actions cannot be completed by DIT directly — flag these for escalation.</p>
+    <p>If unsure on routing, check the IT Glue doc or ask escalations.</p>
+    <p>This app does not track ticket status — keep all notes and updates in ConnectWise and Jira.</p>
+  </div>
+
+  <!-- ─── Process Flow Banner ────────────────────────────────── -->
+  <div class="process-banner">
+    <div class="process-banner-header">
+      <span class="process-icon">📋</span>
+      <span class="process-title">Routing Process — Follow this order every time you pass a ticket</span>
+    </div>
+    <div class="process-note">
+      If DIT handles it, just work it like a normal ticket. If you're routing it to someone else, follow these steps:
+    </div>
+    <ol class="process-steps">
+      <li>
+        <div class="step-body">
+          <strong>Escalate first.</strong> Put the ticket in escalations and get approval before doing anything.
+          Approvers: <span class="approver-list">Taylor Wanamaker · Andrew Minear · John Tuley · Thomas Traver · Kyle</span>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <strong>Assign in Jira</strong> once you have approval.
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <strong>Leave an internal note in the Jira ticket.</strong> Write what you saw in IT Glue that made you route it, who you assigned it to, and your initials at the bottom.
+          <div class="process-example">"Item pricing - passing to Paula<br>-KS"</div>
+        </div>
+      </li>
+      <li>
+        <div class="step-body">
+          <strong>Complete the ticket in ConnectWise.</strong>
+        </div>
+      </li>
+    </ol>
+  </div>
+
+  <!-- ─── Tab Nav ─────────────────────────────────────────────── -->
+  <nav class="tab-nav" role="tablist">
+    <button class="tab-btn active" data-tab="search" role="tab">Search</button>
+    <button class="tab-btn" data-tab="list" role="tab">Full Routing List</button>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TAB 1 — SEARCH
+  ══════════════════════════════════════════════════════════════ -->
+  <section id="tab-search" class="tab-panel">
+
+    <div class="search-section">
+      <div class="search-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="What ticket are you routing?"
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+        />
+        <button id="searchClear" class="search-clear" title="Clear search" aria-label="Clear search">×</button>
+      </div>
+    </div>
+
+    <!-- Process reminder — always visible -->
+    <div class="process-reminder">
+      <span class="pr-step"><span class="pr-num">1</span> Escalate &amp; get approval</span>
+      <span class="pr-arrow">→</span>
+      <span class="pr-step"><span class="pr-num">2</span> Assign in Jira</span>
+      <span class="pr-arrow">→</span>
+      <span class="pr-step"><span class="pr-num">3</span> Internal note + initials in Jira</span>
+      <span class="pr-arrow">→</span>
+      <span class="pr-step"><span class="pr-num">4</span> Complete in CW</span>
+    </div>
+
+    <!-- Idle state -->
+    <div id="searchIdle" class="search-idle">
+      <p class="idle-label">Try searching for</p>
+      <div class="example-chips">
+        <button class="chip" data-query="aws">aws</button>
+        <button class="chip" data-query="m3 password">m3 password</button>
+        <button class="chip" data-query="powerbi">powerbi</button>
+        <button class="chip" data-query="concur">concur</button>
+        <button class="chip" data-query="new hire">new hire</button>
+        <button class="chip" data-query="vpn">vpn</button>
+        <button class="chip" data-query="softeon">softeon</button>
+        <button class="chip" data-query="edi">edi</button>
+      </div>
+      <p class="idle-hint">Or browse the <button class="link-btn" data-goto="list">Full Routing List</button></p>
+    </div>
+
+    <!-- Results -->
+    <div id="searchResultsMeta" class="results-meta" hidden>
+      <span id="searchResultCount" class="result-count"></span>
+      <span class="result-hint">Press <kbd>/</kbd> to search</span>
+    </div>
+    <div id="searchContainer" hidden></div>
+
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TAB 2 — FULL ROUTING LIST
+  ══════════════════════════════════════════════════════════════ -->
+  <section id="tab-list" class="tab-panel" hidden>
+
+    <div class="filters-row">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="assign">Assign</button>
+      <button class="filter-btn" data-filter="dit">DIT Handles</button>
+      <button class="filter-btn" data-filter="deny">Deny / Cancel</button>
+      <button class="filter-btn" data-filter="escalate">Escalate</button>
+      <button class="filter-btn" data-filter="ryan">Ask Ryan First</button>
+      <button class="filter-btn" data-filter="itg">Has IT Glue Ref</button>
+      <button class="filter-btn" data-filter="external">External Contact</button>
+    </div>
+
+    <div class="results-meta">
+      <span id="listResultCount" class="result-count"></span>
+      <span class="result-hint">Press <kbd>/</kbd> to search</span>
+    </div>
+    <div id="listContainer"></div>
+
+  </section>
+
+  <!-- ─── Admin Panel (toggled by gear icon) ──────────────────── -->
+  <div id="adminPanel" class="admin-panel" hidden>
+    <div class="admin-panel-header">⚙ Admin / Edit Data</div>
+
+    <div class="admin-section">
+      <h2 class="admin-section-title">IT Glue Routing Doc Link</h2>
+      <p class="admin-desc">Update the IT Glue link if the document URL changes. Saved to this browser.</p>
+      <div class="admin-row" style="gap:8px;">
+        <input
+          id="itgLinkInput"
+          type="text"
+          class="admin-input"
+          placeholder="Paste updated IT Glue URL here…"
+        />
+        <button id="itgSaveBtn" class="tool-btn primary">Save Link</button>
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <h2 class="admin-section-title">Manage Rules</h2>
+      <p class="admin-desc">Changes are saved locally in this browser. Export JSON to update the source file.</p>
+      <div class="admin-row">
+        <button id="btnAdd"    class="tool-btn primary">+ Add Rule</button>
+        <button id="btnExport" class="tool-btn">Export JSON</button>
+        <button id="btnImport" class="tool-btn">Import JSON</button>
+      </div>
+      <input id="importFileInput" type="file" accept=".json" />
+    </div>
+  </div>
+
+</div><!-- /app-wrapper -->
+
+
+<!-- ─── Edit / Add Modal ────────────────────────────────────── -->
+<div id="editModal" class="modal-overlay">
+  <div class="modal">
+    <div class="modal-title">
+      <span id="modalTitle">Edit Routing Rule</span>
+      <button id="modalCloseX" class="modal-close" title="Close">✕</button>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group" style="grid-column:1/-1">
+        <label for="fCategory">Category / Ticket Type <span style="color:var(--deny-text)">*</span></label>
+        <input id="fCategory" type="text" placeholder="e.g. AWS, M3 Password Resets, Concur account request" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="fActionType">Action Type</label>
+        <select id="fActionType">
+          <option value="assign">Assign — route to a specific person</option>
+          <option value="dit">DIT Handles — we work this</option>
+          <option value="deny">Deny / Cancel — cancel the ticket</option>
+          <option value="escalate">Escalate — do pre-work then escalate</option>
+          <option value="external">External Contact — not us or Hilco IT</option>
+          <option value="reference">Reference ITG Doc — follow a procedure</option>
+          <option value="ask">Ask / Confirm First — check before doing anything</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="fAssignTo">Assign To</label>
+        <input id="fAssignTo" type="text" placeholder="e.g. Ryan Creasia, Tom Rammel" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="fBackup">Backup</label>
+        <input id="fBackup" type="text" placeholder="Backup assignee" />
+      </div>
+      <div class="form-group">
+        <label for="fParticipants">Participants</label>
+        <input id="fParticipants" type="text" placeholder="Comma-separated" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="fKeywords">Keywords / Tags</label>
+      <input id="fKeywords" type="text" placeholder="Comma-separated keywords for search matching" />
+      <div class="form-hint">These drive search matching. Include system names, ticket types, synonyms.</div>
+    </div>
+
+    <div class="form-group">
+      <label for="fNotes">Notes</label>
+      <textarea id="fNotes" placeholder="Instructions, caveats, etc."></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="fWarnings">Warnings</label>
+        <input id="fWarnings" type="text" placeholder="e.g. ASK RYAN FIRST, DENY / CANCEL" />
+        <div class="form-hint">Use ASK RYAN FIRST to trigger the red badge.</div>
+      </div>
+      <div class="form-group">
+        <label for="fLinks">Links</label>
+        <input id="fLinks" type="text" placeholder="Comma-separated URLs or mailto: links" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="fSource">Source</label>
+      <input id="fSource" type="text" value="Hilco routing chart" />
+    </div>
+
+    <div class="modal-footer">
+      <button id="modalCancel" class="modal-btn cancel">Cancel</button>
+      <button id="modalSave"   class="modal-btn save">Save Rule</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ─── Toast Container ─────────────────────────────────────── -->
+<div id="toastContainer"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
