@@ -141,10 +141,9 @@ app-wrapper
 ├── app-header
 │   ├── .home-btn (button wrapping h1 + subtitle — clicks → switchTab('search') + focus input)
 │   └── .header-links
-│       ├── ↗ Jira Board (resource-link primary)      ← SECURITY: consider removing (see §9)
-│       ├── ↗ IT Glue Doc (resource-link itg-link)    ← SECURITY: consider removing (see §9)
 │       ├── 🌙 darkToggle (gear-btn style)
 │       └── ⚙ adminToggle (gear-btn)
+│       (↗ Jira Board and ↗ IT Glue Doc links were removed — security concern)
 ├── .warning-banner (cream/gold, pulsing, expandable)
 │   ├── ⚠ icon
 │   ├── .warn-content (headline + 2 bullets: Ryan + no M365)
@@ -262,16 +261,16 @@ The app is currently **publicly accessible** with no authentication. Casey ident
 - ✅ Both mobile passes complete and deployed
 - ✅ `dev` branch created and pushed
 - ✅ AGENT_HANDOFF.md updated
-- ⏳ **Security concern raised — not yet acted on.** See §9.
-- ⏳ Header links (Jira Board + IT Glue) still in the UI — user said they'd remove them
+- ✅ **Header links removed** — ↗ Jira Board and ↗ IT Glue Doc removed from header (security)
+- ⏳ **Auth layer not yet implemented** — talk to Robert about direction. See §9 for options.
 
 ---
 
 ## 12. Known Issues / Future Work
 
 ### Immediate (security)
-- Remove ↗ Jira Board and ↗ IT Glue Doc from header links
-- Decide on auth strategy (talk to Robert) — see §9 options
+- ✅ ↗ Jira Board and ↗ IT Glue Doc removed from header
+- ⏳ Decide on auth strategy (talk to Robert) — see §9 options
 
 ### High
 - Dark mode QA pass on mobile — some elements may not be perfect in dark + small screen combo
