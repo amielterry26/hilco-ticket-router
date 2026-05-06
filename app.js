@@ -776,6 +776,16 @@ document.addEventListener('DOMContentLoaded', () => {
     renderSearch();
   });
 
+  // On mobile: when search is focused, scroll the search bar to the top
+  // so it sits above the keyboard and results are visible below it.
+  searchInput.addEventListener('focus', () => {
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      setTimeout(() => {
+        document.querySelector('.search-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 300);
+    }
+  });
+
   // mousedown + preventDefault keeps focus in the input so the click registers reliably
   clearBtn.addEventListener('mousedown', e => {
     e.preventDefault();
